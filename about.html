@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siddha Organic - Our Story</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Define the custom color palette and font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root {
+            --color-olive-dark: #66884f; /* Darker background green */
+            --color-olive-light: #6e8e58; /* Button/accent green */
+            --color-cream: #f7f7f5; /* Light central card background */
+            --color-text: #2c3e50;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-olive-dark);
+        }
+        .main-content-bg {
+            background-color: var(--color-cream);
+        }
+        /* Tailwind custom utilities */
+        .text-olive-dark { color: var(--color-olive-dark); }
+        .bg-olive-dark { background-color: var(--color-olive-dark); }
+        .text-olive-light { color: var(--color-olive-light); }
+        .bg-olive-light { background-color: var(--color-olive-light); }
+
+        /* Custom scroll animation effect for section headers */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+.logo {
+  font-size: 1.6rem;
+  font-family: 'Playfair Display', serif;
+  color: #3a5527;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #8ca36c;
+}
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+    <!-- Header/Navigation -->
+    <header class="bg-olive-dark shadow-lg sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="logo">🌿 Siddha <span>Organic</span></div>
+            <nav class="flex items-center space-x-6">
+                <a href="products.html" class="text-white hover:text-yellow-300 transition duration-150 font-medium flex items-center">
+                    <i data-lucide="package" class="w-5 h-5 mr-1"></i> Shop Products
+                </a>
+            </nav>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <div class="main-content-bg flex-grow">
+    <button 
+    onclick="window.location.href='index.html'" 
+    class="mt-12 text-sm text-gray-500 hover:text-text-primary transition flex items-center justify-center space-x-2"
+>
+    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+    <span>Back to Home</span>
+</button>
+        <!-- Hero Section: The Founding Story -->
+        <section class="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:flex lg:items-center">
+                    <div class="lg:w-1/2 lg:pr-12 mb-10 lg:mb-0">
+                        <span class="text-lg font-semibold text-olive-light uppercase tracking-wider">Our Roots Run Deep</span>
+                        <h2 class="mt-2 text-5xl md:text-6xl font-extrabold text-olive-dark leading-tight fade-in-on-scroll">
+                            From a Single Seed to a <span class="text-yellow-500">National Movement</span>
+                        </h2>
+                        <p class="mt-6 text-gray-700 text-lg">
+                            Siddha Organic began with a simple philosophy: 'Sehet' vahi, jaha 'Shudhta' sahi. We have always believe in organic farming so came with an idea 
+                            of farming in our huge acres of ancestral farms whose enriched soil has always resulted in cultivation of healthy crops.
+                            Born from a desire to reclaim traditional, chemical-free farming in our family's ancestral lands, our journey is a testament to sustainable health. 
+                            We are not just a farm; we are a promise to the future, ensuring every grain, spice, and oil is a gift from nature, untouched by toxins.
+                        </p>
+                        <a href="#mission" class="mt-8 inline-flex items-center text-lg font-bold text-olive-light hover:text-olive-dark transition duration-150">
+                            Explore Our Mission <i data-lucide="chevron-right" class="w-5 h-5 ml-1"></i>
+                        </a>
+                    </div>
+                    <div class="lg:w-1/2 rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.01] transition duration-500">
+                        <!-- Placeholder for a beautiful farm image -->
+                        <img src="images/4.jpg" alt="Lush Organic Farm" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="bg-white py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Section 2: Organic Farming Techniques -->
+                <section class="mb-20 fade-in-on-scroll" id="techniques">
+                    <h3 class="text-4xl font-bold text-center text-olive-dark mb-12">Our Pillars of Purity: Farming Techniques</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        
+                        <!-- Technique 1: Crop Rotation -->
+                        <div class="p-6 bg-cream rounded-xl shadow-lg border-t-4 border-olive-light hover:shadow-xl transition duration-300">
+                            <i data-lucide="cycle" class="w-10 h-10 text-olive-light mb-3"></i>
+                            <h4 class="text-2xl font-semibold text-olive-dark mb-3">Holistic Crop Rotation</h4>
+                            <p class="text-gray-600">
+                                We rotate crops seasonally to naturally replenish soil nutrients, break pest cycles, and prevent erosion. This eliminates the need for chemical fertilizers and promotes long-term soil health.
+                            </p>
+                        </div>
+                        
+                        <!-- Technique 2: Natural Pest Control -->
+                        <div class="p-6 bg-cream rounded-xl shadow-lg border-t-4 border-olive-light hover:shadow-xl transition duration-300">
+                            <i data-lucide="bug-off" class="w-10 h-10 text-olive-light mb-3"></i>
+                            <h4 class="text-2xl font-semibold text-olive-dark mb-3">Bio-Pesticides & Companion Planting</h4>
+                            <p class="text-gray-600">
+                                We use only natural, indigenous solutions like *Neem oil* and introduce beneficial insects to maintain ecological balance. Companion planting naturally protects our vulnerable crops.
+                            </p>
+                        </div>
+                        
+                        <!-- Technique 3: Water Conservation -->
+                        <div class="p-6 bg-cream rounded-xl shadow-lg border-t-4 border-olive-light hover:shadow-xl transition duration-300">
+                            <i data-lucide="droplets" class="w-10 h-10 text-olive-light mb-3"></i>
+                            <h4 class="text-2xl font-semibold text-olive-dark mb-3">Efficient Drip Irrigation</h4>
+                            <p class="text-gray-600">
+                                Water is precious. We employ advanced drip irrigation and rainwater harvesting techniques to ensure maximum efficiency and responsible usage, minimizing our ecological footprint.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: The Mission and Impact -->
+                <section class="bg-olive-dark text-white p-8 md:p-12 rounded-2xl shadow-2xl fade-in-on-scroll" id="mission">
+                    <h3 class="text-4xl font-bold text-center text-yellow-300 mb-4">Our Motto: Health for Every Indian</h3>
+                    <p class="text-center text-lg max-w-3xl mx-auto mb-10 text-gray-200">
+                        Our ultimate goal is to see a chemical-free India. We promote organic farming not just as a business, but as a crucial step towards a healthier nation, benefiting every generation.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        
+                        <!-- Impact 1: Youth -->
+                        <div class="p-4 bg-olive-light rounded-lg">
+                            <i data-lucide="graduation-cap" class="w-10 h-10 text-yellow-300 mx-auto mb-3"></i>
+                            <h4 class="text-2xl font-semibold mb-2">The Youth</h4>
+                            <p class="text-gray-100 text-sm">Fueling the next generation with pure nutrition for peak physical and cognitive development.</p>
+                        </div>
+                        
+                        <!-- Impact 2: Children -->
+                        <div class="p-4 bg-olive-light rounded-lg">
+                            <i data-lucide="baby" class="w-10 h-10 text-yellow-300 mx-auto mb-3"></i>
+                            <h4 class="text-2xl font-semibold mb-2">Children</h4>
+                            <p class="text-gray-100 text-sm">Protecting our most vulnerable from pesticides and ensuring a strong foundation for lifelong health.</p>
+                        </div>
+                        
+                        <!-- Impact 3: Old Age -->
+                        <div class="p-4 bg-olive-light rounded-lg">
+                            <i data-lucide="heart-pulse" class="w-10 h-10 text-yellow-300 mx-auto mb-3"></i>
+                            <h4 class="text-2xl font-semibold mb-2">Old Age</h4>
+                            <p class="text-gray-100 text-sm">Offering gentle, easily digestible, and restorative foods to support vitality and immunity in later years.</p>
+                        </div>
+                    </div>
+                </section><br>
+                <section class="mb-16 fade-in-on-scroll" id="committee">
+                    <h3 class="text-4xl font-bold text-center text-olive-dark mb-12">Meet Our Core Committee</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        
+                        <!-- Member 1: Founder -->
+                        <div class="p-6 bg-white rounded-xl shadow-2xl text-center border-t-8 border-yellow-500">
+                            <img src="images/sidd.jpg" alt="Siddharth Sharma" class="w-36 h-36 object-cover rounded-full mx-auto mb-4 border-4 border-cream shadow-md">
+                            <h4 class="text-2xl font-bold text-olive-dark">Siddhnath Tiwari</h4>
+                            <p class="text-lg font-semibold text-yellow-600 mb-4">Founder & Visionary Head</p>
+                            
+                            <div class="space-y-2 text-sm text-gray-700">
+                                <a href="tel:+919839277205 " class="flex items-center justify-center"><i data-lucide="phone" class="w-4 h-4 mr-2 text-olive-light"></i> +91 9554845000</a>
+                                <a href="mailto:sntp.5000@gmail.com" class="flex items-center justify-center"><i data-lucide="mail" class="w-4 h-4 mr-2 text-olive-light"></i> sntp.5000@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white rounded-xl shadow-2xl text-center border-t-8 border-yellow-500">
+                            <img src="images/jagat.jpg" alt="Jagat Narayan Shukla" class="w-36 h-36 object-cover rounded-full mx-auto mb-4 border-4 border-cream shadow-md">
+                            <h4 class="text-2xl font-bold text-olive-dark">Jagat Narayan Shukla<br> (Retired Army Officer)</h4>
+                            <p class="text-lg font-semibold text-yellow-600 mb-4">Co-Founder</p>
+                            
+                            <div class="space-y-2 text-sm text-gray-700">
+                                <a href="tel:+918318388691" class="flex items-center justify-center"><i data-lucide="phone" class="w-4 h-4 mr-2 text-olive-light"></i> +91 831 838 8691</a>
+                                <a href="mailto:Jagatpradhan2824@gmail.com" class="flex items-center justify-center"><i data-lucide="mail" class="w-4 h-4 mr-2 text-olive-light"></i> Jagatpradhan2824@gmail.com</a>
+                            </div>
+                        </div>
+                        <!-- Member 2: Head of Farming Operations -->
+                        <div class="p-6 bg-white rounded-xl shadow-2xl text-center border-t-8 border-yellow-500">
+                            <img src="images/rishi.jpg" alt="Rishi Tiwari" class="w-36 h-36 object-cover rounded-full mx-auto mb-4 border-4 border-cream shadow-md">
+                            <h4 class="text-2xl font-bold text-olive-dark">Rishi Tiwari</h4>
+                            <p class="text-lg font-semibold text-yellow-600 mb-4">CEO & Managing Director</p>
+                            
+                            <div class="space-y-2 text-sm text-gray-700">
+                                <a href="tel:+919839277205" class="flex items-center justify-center"><i data-lucide="phone" class="w-4 h-4 mr-2 text-olive-light"></i> +91 983 927 7205</a>
+                                <a href="mailto:rishirajtiwari20@gmail.com" class="flex items-center justify-center"><i data-lucide="mail" class="w-4 h-4 mr-2 text-olive-light"></i> rishirajtiwari20@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white rounded-xl shadow-2xl text-center border-t-8 border-yellow-500">
+                            <img src="images/shreya.jpg" alt="Shreya Gupta" class="w-36 h-36 object-cover rounded-full mx-auto mb-4 border-4 border-cream shadow-md">
+                            <h4 class="text-2xl font-bold text-olive-dark">Shreya Gupta</h4>
+                            <p class="text-lg font-semibold text-yellow-600 mb-4">Marketing Director</p>
+                            
+                            <div class="space-y-2 text-sm text-gray-700">
+                                <a href="tel:+919555646199" class="flex items-center justify-center"><i data-lucide="phone" class="w-4 h-4 mr-2 text-olive-light"></i> +91 955 564 6199</a>
+                                <a href="mailto:shreyagupta00172@gmail.com" class="flex items-center justify-center"><i data-lucide="mail" class="w-4 h-4 mr-2 text-olive-light"></i> shreyagupta00172@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust Bar Footer (Consistent with Products Page) -->
+    <div class="trust-bar bg-olive-dark text-white py-4 text-sm text-center">
+        <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-center items-center gap-x-6 gap-y-2">
+            <span class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-1 text-yellow-300"></i> 100% Organic</span>
+            <span class="flex items-center"><i data-lucide="truck" class="w-4 h-4 mr-1 text-yellow-300"></i> Nation Delivery</span>
+            <span class="flex items-center"><i data-lucide="thumbs-up" class="w-4 h-4 mr-1 text-yellow-300"></i> Trusted Quality</span>
+            <span class="flex items-center"><i data-lucide="leaf" class="w-4 h-4 mr-1 text-yellow-300"></i> Sustainable Farming</span>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons for the page
+        lucide.createIcons();
+
+        // Simple Intersection Observer for Fade-in animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Stop observing once visible
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            document.querySelectorAll('.fade-in-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

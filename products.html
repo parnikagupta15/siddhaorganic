@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siddha Organic - Products (Full e-commerce Flow)</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Define the custom color palette and font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root {
+            --color-olive-dark: #4d643d; /* Darker background green */
+            --color-olive-light: #6e8e58; /* Button/accent green */
+            --color-cream: #f7f7f5; /* Light central card background */
+            --color-text: #2c3e50;
+            --color-red-danger: #e74c3c;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-olive-dark);
+        }
+        .main-content-bg {
+            background-color: var(--color-cream);
+        }
+        .logo {
+  font-size: 1.6rem;
+  font-family: 'Playfair Display', serif;
+  color: #3a5527;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #8ca36c;
+}
+        .product-card {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            overflow: hidden;
+            background-color: white;
+            border-radius: 1rem;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            cursor: pointer; /* Indicate clickability */
+        }
+        .shop-now-btn, .action-btn {
+            background-color: var(--color-olive-light);
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .shop-now-btn:hover, .action-btn:hover {
+            background-color: var(--color-olive-dark);
+        }
+        /* Style for multi-level dropdown menus */
+        .group:hover .group-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .group-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateY(10px);
+        }
+        .group\/sub:hover .group-sub-dropdown {
+              opacity: 1;
+              visibility: visible;
+        }
+        .group-sub-dropdown {
+              opacity: 0;
+              visibility: hidden;
+              transition: opacity 0.3s;
+              z-index: 30;
+        }
+        /* PDP Variant Selector */
+        .variant-radio:checked + label {
+            border-color: var(--color-olive-dark);
+            background-color: var(--color-olive-light);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'olive-dark': 'var(--color-olive-dark)',
+                        'olive-light': 'var(--color-olive-light)',
+                        'cream': 'var(--color-cream)',
+                        'text-primary': 'var(--color-text)',
+                    }
+                }
+            }
+        }
+
+        // --- MOCK PRODUCT DATA (Enhanced with details and variants) ---
+        const products = [
+            {
+                id: 1, name: "Organic Chakki Atta", category: "Flour", subcategory: "Wheat",
+                img: "images/atta.jpg",
+                description: "Finely milled from the best organic wheat grains, our Whole Wheat Atta is perfect for soft, fluffy chapatis and light bakes. Stone-ground to retain all the natural fiber and nutrients.",
+                ingredients: "100% Organic Whole Wheat Grains (Triticum aestivum). Rich in dietary fiber, protein, and essential B vitamins.",
+                authenticity: "100% trusted quality. No preservatives or Artificial colors. Sourced directly from sustainable farms.",
+                variants: [
+                    { size: "1 kg Packet", price: 50.00 },
+                    { size: "5 kg Bag", price: 200.00 },
+                    { size: "10 kg Bag", price: 700.00 }
+                ]
+            },
+            {
+                id: 4, name: "Organic Bajra Flour", category: "Flour", subcategory: "Bajra",
+                img: "images/bajra.jpg",
+                description: "Gluten-free Bajra (Pearl Millet) flour, rich in iron and magnesium. Excellent for winter rotis and savory pancakes. Promotes digestive health.",
+                ingredients: "100% Organic Bajra whole grains.",
+                authenticity: "Naturally gluten-free. Processed in a dedicated facility to avoid cross-contamination. Lab-tested purity.",
+                variants: [
+                    { size: "500g Packet", price: 55.00 },
+                    { size: "1 kg Packet", price: 95.00 },
+                    { size: "2 kg Bag", price: 190.00 }
+                ]
+            },
+            {
+    id: 7,
+    name: "Organic Besan (Gram Flour)",
+    category: "Flour",
+    subcategory: "Besan",
+    img: "images/besan.webp",
+    description: "Finely ground from 100% organic chana dal, this Besan (Gram Flour) brings purity and nutrition to every recipe. Known for its golden color and nutty aroma, it’s a staple in Indian kitchens — perfect for pakoras, cheelas, sweets, and batters.",
+    ingredients: "100% Organic Gram Flour (Cicer arietinum).",
+    authenticity: "Stone-ground and unadulterated. No artificial color or preservatives. Packed fresh to preserve natural aroma and nutrition. Best before 12 months from packing.",
+    variants: [
+        { size: "1 kg Packet", price: 130.00 },
+        { size: "5 kg Bag", price: 630.00 },
+        { size: "10 kg Bag", price: 1200.00 }
+    ]
+},
+            {
+                id: 2, name: "Organic Arhar/Toor Dal", category: "High Protien", subcategory: "Toor Daal",
+                img: "images/toor.jpg",
+                description: "Premium quality Toor Dal, split and polished naturally. A staple in Indian kitchens, perfect for making delicious Sambhar or Dal Fry. High in plant-based protein.",
+                ingredients: "100% Organic Split Pigeon Peas.",
+                authenticity: "Double-cleaned and machine-sorted for purity. Certified Organic. Minimum cooking time due to superior processing.",
+                variants: [
+                    { size: "500g Packet", price: 100.00 },
+                    { size: "1 kg Packet", price: 400.00 },
+                    { size: "5 kg Bag", price: 900.00 }
+                ]
+            },
+            {
+                id: 5, name: "Organic Chana Dal (Split Chickpeas)", category: "Pulses", subcategory: "Chana",
+                img: "images/chana.webp",
+                description: "Hearty and nutritious Chana Dal. Known for its earthy flavor and versatility in various Indian dishes, from soups to snacks. A powerhouse of protein and fibre.",
+                ingredients: "100% Organic Split Chickpeas (Cicer arietinum).",
+                authenticity: "Unpolished and chemical-free. Hand-picked quality assurance. Best before 12 months from packing.",
+                variants: [
+                    { size: "1 kg Packet", price: 120.00 },
+                    { size: "5 kg Bag", price: 580.00 },
+                    { size: "10 kg Bag", price: 1100.00 }
+                ]
+            },
+            {
+    id: 9,
+    name: "Organic Moong Dal (Split Green Gram)",
+    category: "Pulses",
+    subcategory: "Moong",
+    img: "images/moong.jpg",
+    description: "Light, easily digestible, and protein-rich, Organic Moong Dal is a staple for healthy Indian meals. Naturally split and skinned to retain nutrition, it’s ideal for soups, khichdi, dal tadka, and everyday cooking.",
+    ingredients: "100% Organic Moong Dal (Vigna radiata).",
+    authenticity: "Unpolished, naturally processed, and chemical-free. Sourced from certified organic farms. Hygienically packed to preserve freshness and quality.",
+    variants: [
+        { size: "1 kg Packet", price: 50.00 },
+        { size: "5 kg Bag", price: 240.00 },
+        { size: "10 kg Bag", price: 600.00 }
+    ]
+},
+{
+    id: 10,
+    name: "Organic Laal Masoor Dal (Red Lentils)",
+    category: "Pulses",
+    subcategory: "Masoor",
+    img: "images/masoor.webp",
+    description: "Naturally rich in protein and iron, Organic Laal Masoor Dal is known for its fast cooking and mild, earthy flavor. A perfect choice for quick, nutritious meals like dal fry, soups, and stews.",
+    ingredients: "100% Organic Red Lentils (Lens culinaris).",
+    authenticity: "Unpolished and chemical-free. Carefully cleaned and packed for superior quality. Grown using traditional organic farming methods.",
+    variants: [
+        { size: "1 kg Packet", price: 125.00 },
+        { size: "5 kg Bag", price: 590.00 },
+        { size: "10 kg Bag", price: 1120.00 }
+    ]
+},
+
+            {
+                id: 3, name: "Organic Basmati Chawal", category: "Rice", subcategory: "Basmati",
+                img: "images/rice.jpg",
+                description: "Naturally aged Basmati rice known for its fragrant aroma and long, slender grains. Ideal for biryanis, pilafs, and everyday meals. Ensures fluffy, non-sticky rice every time.",
+                ingredients: "100% Organic, Aged Basmati Rice.",
+                authenticity: "Aged for 12 months to enhance flavor. Free from chemical polishing. Tested for pesticide residue.",
+                variants: [
+                    { size: "1 kg Packet", price: 125.00 },
+                    { size: "5 kg Bag", price: 600.00 },
+                    { size: "10 kg Bag", price: 1150.00 }
+                ]
+            },
+            {
+    id: 8,
+    name: "Organic Indrayani Rice (Medium-Grain)",
+    category: "Rice",
+    subcategory: "Indrayani",
+    img: "images/indrayani.jpg",
+    description: "Aromatic and slightly sticky, Organic Indrayani Rice is a medium-grain variety cherished for its soft texture and comforting flavor. Ideal for khichdi, pulao, or traditional Maharashtrian meals, it brings natural fragrance and wholesome nutrition to your plate.",
+    ingredients: "100% Organic Indrayani Rice (Oryza sativa).",
+    authenticity: "Naturally aged and unpolished for enhanced aroma and taste. Grown using sustainable farming practices with zero pesticides. Best before 12 months from packing.",
+    variants: [
+        { size: "1 kg Packet", price: 600.00 },
+        { size: "5 kg Bag", price: 400.00 },
+        { size: "10 kg Bag", price: 800.00 }
+    ]
+},
+            {
+    id: 11,
+    name: "Organic Mustard Oil (Sarso Tel)",
+    category: "100% Natural Oil",
+    subcategory: "Mustard",
+    img: "images/mustard.jpg",
+    description: "Cold-pressed from premium organic mustard seeds, this Organic Mustard Oil offers a rich aroma and pungent flavor. Ideal for cooking, sautéing, pickling, and enhancing traditional Indian dishes.",
+    ingredients: "100% Organic Mustard Seeds (Brassica juncea).",
+    authenticity: "Unrefined, cold-pressed, and chemical-free. Packed carefully to retain natural nutrients and flavor. Sourced from trusted organic farms following traditional methods.",
+    variants: [
+        { size: "250 ml Bottle", price: 150.00 },
+        { size: "500 ml Bottle", price: 280.00 },
+        { size: "1 L Bottle", price: 550.00 }
+    ]
+},
+           {
+    id: 12,
+    name: "Organic Soyabean Oil",
+    category: "100% Natural Oil",
+    subcategory: "Soyabean",
+    img: "images/soyabean.jpg",
+    description: "Cold-pressed from high-quality organic soybeans, this Organic Soyabean Oil is light, healthy, and perfect for everyday cooking. Ideal for frying, sautéing, and salad dressings.",
+    ingredients: "100% Organic Soybeans (Glycine max).",
+    authenticity: "Unrefined, chemical-free, and cold-pressed to preserve natural nutrients and flavor. Sourced from trusted organic farms practicing sustainable farming methods.",
+    variants: [
+        { size: "500 ml Bottle", price: 180.00 },
+        { size: "1 L Bottle", price: 340.00 },
+        { size: "5 L Jar", price: 1600.00 }
+    ]
+},
+{
+    id: 13,
+    name: "Organic Herbal Tea Leaves",
+    category: "Beverages",
+    subcategory: "Tea",
+    img: "images/tea.jpg",
+    description: "A soothing blend of premium organic herbs, carefully selected for taste and wellness. Perfect for calming, refreshing, and rejuvenating tea experiences anytime.",
+    ingredients: "100% Organic Herbal Leaves (Chamomile, Peppermint, Lemongrass, Hibiscus, and other natural herbs).",
+    authenticity: "Chemical-free, pesticide-free, and unprocessed. Handpicked and sun-dried to retain natural aroma, flavor, and health benefits. Grown using traditional organic farming methods.",
+    variants: [
+        { size: "50 gm Pack", price: 120.00 },
+        { size: "100 gm Pack", price: 220.00 },
+        { size: "250 gm Pack", price: 500.00 }
+    ]
+}
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let currentFilter = { category: 'All Products', subcategory: 'All Products' };
+        let currentUser = null; // null or { name: '...', email: '...' }
+        // Cart now stores detailed items instead of just count/total
+        let cartItems = []; // Array of { productId, name, size, unitPrice, quantity }
+        let selectedProduct = null; // Product object for the currently viewed PDP
+
+        // --- UI UTILITY FUNCTIONS ---
+
+        function updateAccountDisplay() {
+            const welcomeText = document.getElementById('accountWelcome');
+            const loginOption = document.getElementById('loginOption');
+            const logoutOption = document.getElementById('logoutOption');
+
+            if (currentUser) {
+                welcomeText.innerHTML = `<p class="font-bold text-olive-dark">Welcome, ${currentUser.name}!</p><p class="text-gray-500 text-xs">${currentUser.email}</p>`;
+                loginOption.classList.add('hidden');
+                logoutOption.classList.remove('hidden');
+            } else {
+                welcomeText.innerHTML = `<p class="font-bold text-olive-dark">Hello, Guest!</p><p class="text-gray-500">Sign in for a better experience</p>`;
+                loginOption.classList.remove('hidden');
+                logoutOption.classList.add('hidden');
+            }
+        }
+        
+        // Helper to compute total and count from cartItems
+        function calculateCartMetrics() {
+            let count = 0;
+            let total = 0.00;
+            cartItems.forEach(item => {
+                count += item.quantity;
+                total += item.unitPrice * item.quantity;
+            });
+            return { count, total };
+        }
+
+        function updateCartDisplay() {
+            const metrics = calculateCartMetrics();
+            const cartBadge = document.getElementById('cartBadge');
+            
+            cartBadge.textContent = metrics.count;
+            cartBadge.classList.toggle('hidden', metrics.count === 0);
+        }
+
+        function closeAllPopups() {
+            document.getElementById('searchContainer').classList.add('hidden');
+            document.getElementById('accountDropdown').classList.add('hidden');
+        }
+
+        function toggleSearchBar() {
+            const searchContainer = document.getElementById('searchContainer');
+            const isHidden = searchContainer.classList.toggle('hidden');
+            if (!isHidden) {
+                document.getElementById('searchInput').focus();
+            }
+            document.getElementById('accountDropdown').classList.add('hidden');
+        }
+
+        function toggleAccountDropdown() {
+            const dropdown = document.getElementById('accountDropdown');
+            dropdown.classList.toggle('hidden');
+            document.getElementById('searchContainer').classList.add('hidden');
+        }
+
+        // --- VIEW SWITCHING ---
+        function showView(viewId) {
+            closeAllPopups();
+            document.getElementById('productView').classList.add('hidden');
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('productDetailsView').classList.add('hidden');
+            document.getElementById('cartView').classList.add('hidden'); // New cart view
+
+            document.getElementById(viewId).classList.remove('hidden');
+
+            if (viewId === 'loginView') {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('signupForm').classList.add('hidden');
+            }
+        }
+
+        // --- PRODUCT GRID FUNCTIONS ---
+
+        function renderProducts(filteredProducts) {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = '';
+
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="md:col-span-3 lg:col-span-4 p-8 text-center text-gray-500">
+                        <i data-lucide="package-x" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+                        <p class="text-xl font-semibold">No products found.</p>
+                        <p class="text-sm mt-2">Try resetting your filter or searching again.</p>
+                    </div>
+                `;
+            } else {
+                filteredProducts.forEach(product => {
+                    const card = document.createElement('div');
+                    // Add click handler to open the PDP
+                    card.setAttribute('onclick', `openProductDetails(${product.id})`);
+                    card.className = 'product-card flex flex-col items-center text-center';
+                    
+                    // Fallback image using placeholder for demonstration since external images are not guaranteed to load
+                    const imageUrl = `https://placehold.co/400x300/6e8e58/ffffff?text=${product.name.replace(/ /g, '+')}`;
+
+                    card.innerHTML = `
+                        <div class="h-48 w-full overflow-hidden">
+                            <img src="${product.img}" alt="${product.name}" 
+                                onerror="this.onerror=null; this.src='${imageUrl}';"
+                                class="w-full h-full object-cover transition duration-500 ease-in-out hover:scale-105">
+                        </div>
+                        <div class="p-4 w-full flex flex-col justify-between flex-grow">
+                            <div>
+                                <span class="text-xs font-medium uppercase text-olive-light">${product.category} / ${product.subcategory}</span>
+                                <h3 class="text-lg font-semibold text-text-primary mb-1 mt-1">${product.name}</h3>
+                                <p class="text-l font-bold text-olive-dark mb-2">₹${product.variants[0].price.toFixed(2)}</p>
+                            </div>
+                            <!-- Display a standard button that goes to the PDP -->
+                            <div class="shop-now-btn text-white font-medium py-2 px-4 rounded-full shadow-lg flex items-center justify-center space-x-2 w-full text-sm">
+                                <span>View Details</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </div>
+                        </div>
+                    `;
+                    productsGrid.appendChild(card);
+                });
+            }
+            lucide.createIcons();
+        }
+
+        function filterProductsBySearch() {
+            closeAllPopups();
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            let filtered = products;
+
+            if (searchTerm) {
+                filtered = products.filter(product =>
+                    product.name.toLowerCase().includes(searchTerm)
+                );
+                document.getElementById('mainTitle').textContent = `Search Results for "${searchTerm}"`;
+            } else if (currentFilter.category !== 'All Products') {
+                 // If search is cleared, revert to current category filter
+                filterProductsByCategory(currentFilter.category, currentFilter.subcategory, false);
+                return;
+            } else {
+                document.getElementById('mainTitle').textContent = "All Featured Products";
+            }
+
+            currentFilter = { category: 'All Products', subcategory: 'All Products' }; // Reset filter if only search was active
+            renderProducts(filtered);
+            showView('productView');
+        }
+
+        function filterProductsByCategory(category, subcategory, closePopups = true) {
+            if (closePopups) closeAllPopups();
+
+            document.getElementById('searchInput').value = "";
+
+            currentFilter.category = category;
+            currentFilter.subcategory = subcategory;
+
+            let filtered;
+            let title;
+
+            if (category === 'All Products') {
+                filtered = products;
+                title = "All Featured Products";
+            } else if (subcategory === 'All' || subcategory.includes('All ')) {
+                filtered = products.filter(p => p.category === category);
+                title = `All Products in the ${category} Category`;
+            } else {
+                filtered = products.filter(p => p.category === category && p.subcategory === subcategory);
+                title = `${subcategory} Products`;
+            }
+
+            document.getElementById('mainTitle').textContent = title;
+            renderProducts(filtered);
+            showView('productView');
+        }
+
+        // --- PRODUCT DETAILS PAGE (PDP) FUNCTIONS ---
+
+        function openProductDetails(productId) {
+            selectedProduct = products.find(p => p.id === productId);
+
+            if (!selectedProduct) {
+                showMessage('Product not found.', 'error');
+                showView('productView');
+                return;
+            }
+            
+            // Fallback image for PDP
+            const imageUrl = `https://placehold.co/600x450/6e8e58/ffffff?text=${selectedProduct.name.replace(/ /g, '+')}`;
+
+
+            const container = document.getElementById('productDetailsView');
+            container.innerHTML = `
+            <button onclick="showView('productView')" class="mt-12 text-sm text-gray-500 hover:text-text-primary transition flex items-center justify-center space-x-2">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Continue Shopping</span>
+                </button><br><br>
+                <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+                    <!-- Product Image (Left Column) -->
+                    <div class="lg:w-1/2 p-4 bg-white rounded-xl shadow-lg">
+                        <img src="${selectedProduct.img}" alt="${selectedProduct.name}" 
+                            onerror="this.onerror=null; this.src='${imageUrl}';"
+                            class="w-full h-auto object-cover rounded-lg shadow-md">
+                        <div class="flex justify-center items-center mt-4 p-3 bg-cream rounded-lg text-sm text-text-primary">
+                            <i data-lucide="leaf" class="w-5 h-5 mr-2 text-olive-light"></i>
+                            <p class="font-medium">${selectedProduct.authenticity}</p>
+                        </div>
+                    </div>
+
+                    <!-- Details, Variants, and Action (Right Column) -->
+                    <div class="lg:w-1/2">
+                        <span class="text-sm font-semibold uppercase text-olive-light">${selectedProduct.category} / ${selectedProduct.subcategory}</span>
+                        <h1 class="text-4xl sm:text-4xl font-bold text-text-primary mt-2 mb-4">${selectedProduct.name}</h1>
+                        
+                        <!-- Price Display -->
+                        <div class="mb-6">
+                            <span class="text-2xl text-gray-500 font-medium">Starting from </span>
+                            <span id="pdpCurrentPrice" class="text-2xl font-extrabold text-olive-600 ml-2">₹${selectedProduct.variants[0].price.toFixed(2)}</span>
+                        </div>
+
+                        <!-- Variant Selector -->
+                        <h3 class="text-xl font-semibold text-text-primary mb-3">Select Package Size</h3>
+                        <div id="pdpVariantContainer" class="flex flex-wrap gap-4 mb-8">
+                            <!-- Variants will be injected here -->
+                        </div>
+
+                        <!-- Add to Cart -->
+                        <button onclick="handleAddToCart()"
+                                class="action-btn text-white font-bold py-3 px-8 rounded-full shadow-xl flex items-center justify-center space-x-3 w-full sm:w-auto text-lg hover:shadow-xl">
+                            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                            <span>Add to Cart</span>
+                        </button><br>
+                        <button onclick="buyNow('${selectedProduct.name}', ${selectedProduct.price})" class="action-btn text-white font-bold py-3 px-8 rounded-full shadow-xl flex items-center justify-center space-x-3 w-full sm:w-auto text-lg hover:shadow-xl">
+                            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                            <span>Buy Now</span>
+</button>
+
+                    </div>
+                </div>
+
+                <hr class="my-10 border-gray-300">
+
+                <!-- Description and Details (Full Width) -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Description -->
+                    <div class="md:col-span-2">
+                        <h3 class="text-2xl font-bold text-olive-dark mb-4">Product Overview</h3>
+                        <p class="text-gray-700 leading-relaxed">${selectedProduct.description}</p>
+                    </div>
+
+                    <!-- Ingredients -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-olive-dark mb-4">Ingredients & Purity</h3>
+                        <div class="bg-white p-4 rounded-lg shadow-inner border border-gray-200 space-y-2">
+                            <p class="font-medium text-text-primary">Ingredients:</p>
+                            <p class="text-sm text-gray-700">${selectedProduct.ingredients}</p>
+                            <hr class="border-gray-100">
+                            <p class="font-medium text-text-primary">Certification:</p>
+                            <p class="text-sm text-gray-700">${selectedProduct.authenticity}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Render the view and then inject the variants
+            showView('productDetailsView');
+            lucide.createIcons();
+            renderVariants();
+        }
+
+        function renderVariants() {
+            const container = document.getElementById('pdpVariantContainer');
+            container.innerHTML = '';
+            
+            selectedProduct.variants.forEach((variant, index) => {
+                const isChecked = index === 0; // Default to the smallest size
+                const radioId = `variant-${selectedProduct.id}-${index}`;
+                
+                // Create a div wrapper for the radio input and label
+                const variantDiv = document.createElement('div');
+                variantDiv.innerHTML = `
+                    <input type="radio" id="${radioId}" name="productVariant" value="${variant.price}" data-size="${variant.size}" 
+                            class="hidden variant-radio" ${isChecked ? 'checked' : ''} onchange="updatePDPPrice(this)">
+                    <label for="${radioId}" 
+                            class="block p-3 rounded-lg border-2 border-gray-300 transition duration-200 text-text-primary cursor-pointer hover:border-olive-light">
+                        <span class="font-bold text-lg">${variant.size}</span>
+                        <br>
+                        <span class="text-sm">₹${variant.price.toFixed(2)}</span>
+                    </label>
+                `;
+                container.appendChild(variantDiv);
+            });
+            
+            // Set the initial price display
+            updatePDPPrice(document.querySelector('.variant-radio:checked'));
+        }
+
+        function updatePDPPrice(radioElement) {
+            const price = parseFloat(radioElement.value);
+            document.getElementById('pdpCurrentPrice').textContent = `₹${price.toFixed(2)}`;
+        }
+
+        function handleAddToCart() {
+            const selectedRadio = document.querySelector('input[name="productVariant"]:checked');
+            
+            if (!selectedRadio) {
+                showMessage('Please select a package size first.', 'error');
+                return;
+            }
+
+            const unitPrice = parseFloat(selectedRadio.value);
+            const size = selectedRadio.getAttribute('data-size');
+            const productName = selectedProduct.name;
+            const productId = selectedProduct.id;
+
+            // Check if this exact item (product ID + size) is already in the cart
+            const existingItem = cartItems.find(item => item.productId === productId && item.size === size);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cartItems.push({
+                    productId: productId,
+                    name: productName,
+                    size: size,
+                    unitPrice: unitPrice,
+                    quantity: 1,
+                });
+            }
+
+            // Update cart display
+            updateCartDisplay();
+            
+            showMessage(`${productName} (${size}) added to cart!`, 'success');
+        }
+
+        // --- CART VIEW FUNCTIONS ---
+
+        function openCartView() {
+            showView('cartView');
+            renderCartContent();
+        }
+
+        function removeItemFromCart(index) {
+            const removedItem = cartItems.splice(index, 1)[0]; // Remove 1 item at 'index'
+            
+            updateCartDisplay();
+            renderCartContent(); // Re-render the cart view
+            
+            showMessage(`${removedItem.name} (${removedItem.size}) removed from cart.`, 'info');
+        }
+
+        // Function to update item quantity in cart
+        function updateCartQuantity(index, change) {
+            const item = cartItems[index];
+            item.quantity += change;
+
+            if (item.quantity <= 0) {
+                removeItemFromCart(index);
+            } else {
+                updateCartDisplay();
+                renderCartContent(); // Re-render the cart view
+            }
+        }
+        
+        function renderCartContent() {
+            const container = document.getElementById('cartView');
+            const metrics = calculateCartMetrics();
+            
+            if (metrics.count === 0) {
+                container.innerHTML = `
+                    <h1 class="text-4xl font-bold text-text-primary mb-6 text-center">Your Cart is Empty</h1>
+                    <div class="text-center p-12 bg-white rounded-xl shadow-lg">
+                        <i data-lucide="shopping-bag" class="w-16 h-16 mx-auto mb-4 text-gray-400"></i>
+                        <p class="text-lg text-gray-600">Looks like you haven't added anything to your cart yet.</p>
+                        <button onclick="showView('productView')" class="action-btn text-white font-semibold py-3 px-6 rounded-full mt-6 transition hover:bg-olive-dark">
+                            Start Shopping
+                        </button>
+                    </div>
+                `;
+            } else {
+                let itemsHtml = cartItems.map((item, index) => {
+                    const itemTotal = item.unitPrice * item.quantity;
+                    return `
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border-b border-gray-200 last:border-b-0 bg-white rounded-xl shadow-md mb-4">
+                            
+                            <!-- Item Details -->
+                            <div class="flex items-center space-x-4 mb-3 sm:mb-0 w-full sm:w-1/2">
+                                <div class="w-16 h-16 flex-shrink-0 bg-cream rounded-lg overflow-hidden border border-gray-200">
+                                     <!-- Placeholder image for cart item -->
+                                    <img src="https://placehold.co/64x64/f7f7f5/4d643d?text=${item.name.charAt(0)}" alt="${item.name.charAt(0)}" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <p class="font-bold text-text-primary text-lg">${item.name}</p>
+                                    <p class="text-sm text-gray-500">${item.size} | ₹${item.unitPrice.toFixed(2)} / unit</p>
+                                </div>
+                            </div>
+
+                            <!-- Quantity and Price Controls -->
+                            <div class="flex items-center space-x-6 w-full sm:w-auto justify-between sm:justify-end">
+                                
+                                <!-- Quantity Control -->
+                                <div class="flex items-center border border-gray-300 rounded-full">
+                                    <button onclick="updateCartQuantity(${index}, -1)" class="p-2 hover:bg-gray-100 rounded-l-full text-olive-dark">
+                                        <i data-lucide="minus" class="w-4 h-4"></i>
+                                    </button>
+                                    <span class="px-3 font-semibold text-text-primary">${item.quantity}</span>
+                                    <button onclick="updateCartQuantity(${index}, 1)" class="p-2 hover:bg-gray-100 rounded-r-full text-olive-dark">
+                                        <i data-lucide="plus" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Item Total & Remove -->
+                                <p class="text-xl font-extrabold text-olive-200 w-24 text-right">₹${itemTotal.toFixed(2)}</p>
+                                <button onclick="removeItemFromCart(${index})" class="text-black-500 hover:text-black-700 transition p-2" aria-label="Remove Item">
+                                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                container.innerHTML = `
+                <button onclick="showView('productView')" class="mt-8 text-sm text-gray-500 hover:text-text-primary transition flex items-left justify-left space-x-2 mx-auto">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        <span>Continue Shopping</span>
+                    </button><br>
+                    <h1 class="text-4xl font-bold text-text-primary mb-8 text-center">Your Shopping Cart</h1>
+                    <div class="lg:flex lg:space-x-8">
+                        
+                        <!-- Cart Items List (Left Column) -->
+                        <div class="lg:w-2/3 bg-cream p-6 rounded-xl shadow-inner mb-6 lg:mb-0">
+                            <h2 class="text-2xl font-semibold text-olive-dark mb-4 border-b pb-2">Order Summary (${metrics.count} Items)</h2>
+                            <div class="space-y-3">
+                                ${itemsHtml}
+                            </div>
+                            <div class="mt-6 pt-4 border-t-2 border-olive-light flex justify-between items-center">
+                                <p class="text-xl font-bold text-text-primary">Grand Total:</p>
+                                <p class="text-3xl font-extrabold text-red-600">₹${metrics.total.toFixed(2)}</p>
+                            </div><br><br>
+                                         <div class="lg:w-1/3 bg-white p-6 rounded-xl shadow-2xl h-fit">
+                            <button onclick="buyNow('${selectedProduct.name}', ${selectedProduct.price})" class="action-btn text-white  font-bold py-3 px-8 rounded-full shadow-xl flex items-center justify-center space-x-3 w-full sm:w-auto text-lg hover:shadow-xl">
+                            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                            <span>Buy Now</span>
+                            </button>
+                        </div>
+
+                        </div>
+                    </div>
+                    
+                `;
+            }
+            lucide.createIcons();
+        }
+
+        function handleCheckout(event) {
+            event.preventDefault();
+            const form = event.target;
+            
+            const location = form.location.value;
+            const contact = form.contact.value;
+            const paymentMethod = form.paymentMethod.value;
+            
+            const metrics = calculateCartMetrics();
+
+            
+            // Show confirmation
+            showOrderConfirmation(metrics.total, location, contact, paymentMethod);
+            
+            // Clear the cart after "successful" order
+            cartItems = [];
+            updateCartDisplay();
+            
+            return false;
+        }
+
+        
+
+
+        // --- MESSAGE BOX (Non-Alert) ---
+        function showMessage(text, type = 'success') {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = text;
+            
+            // Determine colors and icon
+            let bgColor, icon;
+            if (type === 'success') {
+                bgColor = 'bg-green-500';
+                icon = 'check';
+            } else if (type === 'error') {
+                bgColor = 'bg-red-500';
+                icon = 'x';
+            } else { // info
+                bgColor = 'bg-blue-500';
+                icon = 'info';
+            }
+
+            messageBox.className = `fixed bottom-4 left-1/2 -translate-x-1/2 p-4 rounded-lg text-white shadow-xl flex items-center space-x-2 transition-opacity duration-300 z-50 ${bgColor}`;
+            messageBox.classList.remove('opacity-0');
+            messageBox.classList.add('opacity-100');
+            messageBox.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5"></i> <span>${text}</span>`;
+            
+            lucide.createIcons();
+
+            setTimeout(() => {
+                messageBox.classList.remove('opacity-100');
+                messageBox.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        // --- INITIALIZATION ---
+        window.onload = () => {
+            updateAccountDisplay();
+            filterProductsByCategory('All Products', 'All Products', false); // Initial render
+            updateCartDisplay();
+        };
+
+        // --- Mock Login/Logout ---
+        function attemptLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const name = email.split('@')[0];
+            currentUser = { name: name.charAt(0).toUpperCase() + name.slice(1), email: email };
+            updateAccountDisplay();
+            showMessage(`Welcome back, ${currentUser.name}!`, 'success');
+            showView('productView');
+            return false;
+        }
+
+        function attemptSignup() {
+             const email = document.getElementById('signupEmail').value;
+             const name = email.split('@')[0];
+            currentUser = { name: name.charAt(0).toUpperCase() + name.slice(1), email: email };
+            updateAccountDisplay();
+            showMessage(`Account created for ${currentUser.name}!`, 'success');
+            showView('productView');
+            return false;
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            updateAccountDisplay();
+            showMessage('You have been logged out.', 'info');
+            showView('productView');
+        }
+
+        function populateCategoryMenu() {
+            const categories = products.reduce((acc, product) => {
+                if (!acc[product.category]) {
+                    acc[product.category] = new Set();
+                }
+                acc[product.category].add(product.subcategory);
+                return acc;
+            }, {});
+
+            const menu = document.getElementById('categoryMenu');
+            menu.innerHTML = '';
+
+            // Add 'All Products' option
+            const allProductsHtml = `
+                <li><a href="#" onclick="filterProductsByCategory('All Products', 'All Products')" 
+                        class="block px-4 py-2 text-sm text-text-primary hover:bg-cream font-bold transition">All Products</a></li>
+                <hr class="border-gray-200 my-1">
+            `;
+            menu.insertAdjacentHTML('beforeend', allProductsHtml);
+
+
+            for (const category in categories) {
+                const subcategories = Array.from(categories[category]);
+                let categoryHtml = '';
+
+                if (subcategories.length > 1) {
+                    // Category with sub-menu
+                    const subMenuHtml = subcategories.map(sub => `
+                        <li><a href="#" onclick="filterProductsByCategory('${category}', '${sub}')" 
+                                class="block px-4 py-2 text-sm text-text-primary hover:bg-cream transition">${sub}</a></li>
+                    `).join('');
+
+                    categoryHtml = `
+                        <li class="relative group/sub">
+                            <a href="#" onclick="filterProductsByCategory('${category}', 'All ${category}')" 
+                                class="flex justify-between items-center px-4 py-2 text-sm text-text-primary hover:bg-cream transition">
+                                <span>${category}</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </a>
+                            <ul class="group-sub-dropdown absolute left-full top-0 w-48 bg-white border border-gray-200 rounded-xl shadow-lg mt-0.5 z-30">
+                                ${subMenuHtml}
+                            </ul>
+                        </li>
+                    `;
+                } else {
+                    // Simple category link
+                    categoryHtml = `
+                        <li><a href="#" onclick="filterProductsByCategory('${category}', '${subcategories[0]}')" 
+                                class="block px-4 py-2 text-sm text-text-primary hover:bg-cream transition">${category}</a></li>
+                    `;
+                }
+
+                menu.insertAdjacentHTML('beforeend', categoryHtml);
+            }
+            lucide.createIcons();
+        }
+        
+        // Populate the category menu on load
+        document.addEventListener('DOMContentLoaded', populateCategoryMenu);
+    </script>
+    <!-- 🌿 CHECKOUT POPUP START -->
+<style>
+  .checkout-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none; justify-content: center; align-items: center;
+    z-index: 1000;
+  }
+  .checkout-box {
+    background: #fff; padding: 25px; border-radius: 12px;
+    width: 95%; max-width: 420px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from {opacity:0; transform:scale(0.95)} to {opacity:1; transform:scale(1)} }
+  .checkout-box input, .checkout-box select {
+    width: 100%; margin: 8px 0; padding: 10px;
+    border: 1px solid #ccc; border-radius: 6px;
+  }
+  .checkout-btn {
+    background: #2e7d32; color: #fff;
+    border: none; padding: 10px 20px;
+    border-radius: 6px; cursor: pointer; width: 100%;
+  }
+  .checkout-btn:hover { background:#1b5e20 }
+</style>
+
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-box">
+    <h2 style="text-align:center;color:#2e7d32;">Checkout</h2>
+    <form id="checkoutForm">
+      <input type="text" id="custName" placeholder="Full Name" required>
+      <input type="email" id="custEmail" placeholder="Email" required>
+      <input type="tel" id="custPhone" placeholder="Phone Number" required>
+      <input type="text" id="custAddress" placeholder="Address" required>
+      <select id="paymentMode" required>
+        <option value="">Select Payment Method</option>
+        
+        <option value="Cash on Delivery">Cash on Delivery</option>
+      </select>
+      <button type="submit" class="checkout-btn">PLace your Order</button>
+      <button type="button" class="checkout-btn" style="background:#999;margin-top:8px"
+        onclick="closeCheckout()">Cancel</button>
+    </form>
+  </div>
+</div>
+
+</head>
+<body class="min-h-screen antialiased">
+
+    <!-- Global Message Box (Non-Alert) -->
+    <div id="messageBox" class="fixed bottom-4 left-1/2 -translate-x-1/2 p-4 rounded-lg text-white shadow-xl opacity-0 transition-opacity duration-300 z-50 bg-green-500">
+        <!-- Content injected by showMessage JS function -->
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="bg-white sticky top-0 shadow-md z-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" onclick="showView('productView'); filterProductsByCategory('All Products', 'All Products')" class="flex items-center space-x-2">
+                    <div class="logo">🌿 Siddha <span>Organic</span></div>
+                </a>
+
+                <!-- Desktop Navigation Menu (Categories Dropdown) -->
+                <nav class="hidden lg:flex space-x-8">
+                    <a href="index.html" onclick="showView('productView')" class="text-text-primary font-medium hover:text-olive-light transition py-2">Home</a>
+                    <div class="relative group">
+                        <button class="text-text-primary font-medium hover:text-olive-light transition py-2 flex items-center space-x-1">
+                            <span>Shop By Category</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </button>
+                        <ul id="categoryMenu" class="group-dropdown absolute left-0 w-48 bg-white border border-gray-200 rounded-xl shadow-lg mt-0.5 z-30 space-y-1 p-2">
+                            <!-- Category items injected by JS -->
+                        </ul>
+                    </div>
+                    <a href="contact_us.html" onclick="showView('productView')" class="text-text-primary font-medium hover:text-olive-light transition py-2">Contact</a>
+                </nav>
+
+                <!-- Icons (Search, Cart, Account) -->
+                <div class="flex items-center space-x-4 relative">
+                    <!-- Search Icon -->
+                    <button onclick="toggleSearchBar()" class="p-2 rounded-full hover:bg-cream transition text-text-primary">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                    
+                    <!-- Cart Icon -->
+                    <button onclick="openCartView()" class="relative p-2 rounded-full hover:bg-cream transition text-text-primary">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span id="cartBadge" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full hidden">0</span>
+                    </button>
+
+                    <!-- Account Icon/Dropdown Trigger -->
+                    <button onclick="toggleAccountDropdown()" class="p-2 rounded-full hover:bg-cream transition text-text-primary">
+                        <i data-lucide="user-circle" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- Account Dropdown Content -->
+                    <div id="accountDropdown" class="absolute right-0 top-12 w-64 bg-white border border-gray-200 rounded-xl shadow-2xl hidden z-30 p-4">
+                        <div id="accountWelcome" class="mb-3 pb-3 border-b border-gray-100">
+                            <!-- User info injected here -->
+                        </div>
+                        <ul class="space-y-2 text-sm">
+                            <li id="loginOption">
+                                <a href="#" onclick="showView('loginView')" class="flex items-center space-x-2 text-olive-dark font-medium hover:text-olive-light transition">
+                                    <i data-lucide="log-in" class="w-4 h-4"></i><span>Sign In / Register</span>
+                                </a>
+                            </li>
+                        
+                            <li id="logoutOption" class="hidden">
+                                <a href="#" onclick="handleLogout()" class="flex items-center space-x-2 text-red-500 hover:text-red-700 transition">
+                                    <i data-lucide="log-out" class="w-4 h-4"></i><span>Log Out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Bar (Overlay) -->
+        <div id="searchContainer" class="absolute w-full top-20 bg-white shadow-xl hidden p-4 border-t border-gray-100 z-10">
+            <div class="max-w-5xl mx-auto flex">
+                <input type="text" id="searchInput" placeholder="Search products, categories, or ingredients..."
+                       class="flex-grow p-3 border border-gray-300 rounded-l-full focus:ring-olive-light focus:border-olive-light transition"
+                       onkeydown="if(event.key === 'Enter') filterProductsBySearch()">
+                <button onclick="filterProductsBySearch()" class="shop-now-btn text-white px-6 rounded-r-full font-semibold">
+                    Search
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <button 
+    onclick="window.location.href='index.html'" 
+    class="mt-12 text-sm text-white-500 hover:text-text-primary transition flex items-center justify-center space-x-2"
+>
+    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+    <span>Home</span>
+</button><br>  
+        <!-- Product Listing View (Default) -->
+        <section id="productView">
+            <h2 id="mainTitle" class="text-4xl font-bold text-cream mb-6">All Featured Products</h2>
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Products injected by JS -->
+            </div>
+        </section>
+
+        <!-- Product Details View -->
+        <section id="productDetailsView" class="hidden main-content-bg p-8 rounded-xl shadow-2xl">
+            <!-- Product Details Injected by JS -->
+        </section>
+
+        <!-- Cart View -->
+        <section id="cartView" class="hidden main-content-bg p-8 rounded-xl shadow-2xl">
+            <!-- Cart Content Injected by JS -->
+        </section>
+
+        <!-- Login / Registration View -->
+        <section id="loginView" class="hidden flex justify-center items-center py-12">
+            <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-2xl">
+                <h2 class="text-3xl font-bold text-olive-dark mb-6 text-center">Account Access</h2>
+
+                <!-- Login Form -->
+                <form id="loginForm" onsubmit="return attemptLogin()">
+                    <div class="space-y-4">
+                        <input type="email" id="loginEmail" placeholder="Email Address" required
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-olive-light focus:border-olive-light transition">
+                        <input type="password" placeholder="Password" required
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-olive-light focus:border-olive-light transition">
+                    </div>
+                    <button type="submit" class="action-btn w-full text-white font-bold py-3 rounded-full mt-6 shadow-lg hover:shadow-xl">
+                        Sign In
+                    </button>
+                    <p class="text-center mt-4 text-sm text-gray-600">Don't have an account? 
+                        <a href="#" onclick="document.getElementById('loginForm').classList.add('hidden'); document.getElementById('signupForm').classList.remove('hidden');" class="text-olive-light hover:text-olive-dark font-semibold">Sign Up</a>
+                    </p>
+                </form>
+                
+                <!-- Signup Form -->
+                <form id="signupForm" class="hidden" onsubmit="return attemptSignup()">
+                    <div class="space-y-4">
+                        <input type="text" placeholder="Full Name" required
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-olive-light focus:border-olive-light transition">
+                        <input type="email" id="signupEmail" placeholder="Email Address" required
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-olive-light focus:border-olive-light transition">
+                        <input type="password" placeholder="Create Password" required
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-olive-light focus:border-olive-light transition">
+                    </div>
+                    <button type="submit" class="action-btn w-full text-white font-bold py-3 rounded-full mt-6 shadow-lg hover:shadow-xl">
+                        Register Account
+                    </button>
+                    <p class="text-center mt-4 text-sm text-gray-600">Already have an account? 
+                        <a href="#" onclick="document.getElementById('signupForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden');" class="text-olive-light hover:text-olive-dark font-semibold">Sign In</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-white mt-12 py-8 shadow-inner">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600">
+            <p>&copy; 2024 Siddha Organic. All rights reserved. | <span class="text-olive-light">Pure, Authentic, Organic.</span></p>
+        </div>
+    </footer>
+
+</body>
+</html>
+<script>
+  window.selectedProduct = { name: "", price: 0 };
+
+  window.buyNow = function(productName, productPrice) {
+    window.selectedProduct = { name: productName, price: productPrice };
+    document.getElementById("checkoutOverlay").style.display = "flex";
+  };
+
+  window.closeCheckout = function() {
+    document.getElementById("checkoutOverlay").style.display = "none";
+  };
+
+  document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("custName").value.trim();
+    const email = document.getElementById("custEmail").value.trim();
+    const phone = document.getElementById("custPhone").value.trim();
+    const address = document.getElementById("custAddress").value.trim();
+    const paymentMode = document.getElementById("paymentMode").value;
+
+    if (!name || !email || !phone || !address || !paymentMode) {
+      alert("Please fill all details.");
+      return;
+    }
+
+    if (paymentMode === "UPI Payment") {
+      alert("Only Cash on Delievry is available right now");
+    }
+
+    const orderData = {
+      name,
+      email,
+      phone,
+      address,
+      productName: window.selectedProduct.name,
+      productPrice: window.selectedProduct.price,
+      quantity: 1,
+      paymentMode
+    };
+
+    try {
+      const res = await fetch("https://siddhaorganic-backend.onrender.com/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData)
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(`✅ Order confirmed!\nProduct: ${window.selectedProduct.name}\nPayment: ${paymentMode}`);
+        window.closeCheckout();
+      } else {
+        alert("❌ Failed to place order: " + (data.message || "Server error"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error. Please try again.");
+    }
+  });
+</script>
